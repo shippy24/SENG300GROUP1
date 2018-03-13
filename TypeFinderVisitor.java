@@ -24,25 +24,28 @@ import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
 
 public class TypeFinderVisitor extends ASTVisitor {
 	
-	private int declCount;
-	private int refCount;
+	private int declCount = 0;
+	private int refCount = 0;
 	private Set<Object> names = new HashSet<Object>();
 	
 	//Counts number of declarations of search type
-	public boolean visit(VariableDeclarationFragment node) {
+	public boolean visit(VariableDeclarationStatement node) {
 		//name of node to be stored in Hashset to later check for references
-		SimpleName name = node.getName();
+		for (Iterator iter = node.fragments().iterator(); iter.hasNext();) {
+			VariableDeclarationFragment fragment = (VariableDeclarationFragment) iter.next();
+			SimpleName name = fragment.getName();
 		
 		//Resolve the binding to get the type node carries
-		IVariableBinding bind = node.resolveBinding();
-		String typeFound = bind.getVariableDeclaration().toString();
-		String[] typeSplit = typeFound.split("\\s+");
+			IVariableBinding bind = fragment.resolveBinding();
+			String typeFound = bind.getVariableDeclaration().toString();
+			String[] typeSplit = typeFound.split("\\s+");
 		
-		if (Arrays.asList(typeSplit).contains(ASTParserAnalysis.getsearchType())) {
-			this.names.add(name.getIdentifier());
-			++declCount;
+			if (Arrays.asList(typeSplit).contains(ASTParserAnalysis.getsearchType())) {
+				this.names.add(name.getIdentifier());
+				++declCount;
+			}
 		}
-		return false;
+		return true;
 	}
 	
 	public boolean visit(SimpleName node) {

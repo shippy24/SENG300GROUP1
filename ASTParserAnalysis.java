@@ -28,7 +28,7 @@ public class ASTParserAnalysis {
 	private static int declCount;
 	private static int refCount;
 	
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, IllegalStateException {
 		String path = args[0]; 
 		type = args[1];
 		//String newType = "";
@@ -49,6 +49,7 @@ public class ASTParserAnalysis {
 		if (((Arrays.asList(primitive).contains(type)) || javaFile) && (files != null)) {
 			//if true continue with parsing
 			parseFiles(files, absPath);
+			printCounts();
 		}
 		else {
 			//else Invalid type
@@ -97,11 +98,22 @@ public class ASTParserAnalysis {
 			parser.setBindingsRecovery(true);
 			parser.setUnitName(file.getName());
 			
+			Map options = JavaCore.getOptions();
+			parser.setCompilerOptions(options);
+			
 			//setEnvironment sets the environment to be used when no IJavaProjet is available
-			String[] classPathEntries = {file.getAbsolutePath()};
-			parser.setEnvironment(classPathEntries, null, null, true);
-			parser.setSource(fileData.toCharArray());
 			parser.setKind(ASTParser.K_COMPILATION_UNIT);
+			
+			//??FIX HARDCODE OF CLASSPATH LATER??
+			String classPath =  (new File("").getAbsolutePath());
+			String[] classPathEntries = {classPath};
+			//String[] classPathEntries = {"C:\\Users\\shayn\\eclipse-workspace\\SENG300GROUP1"};
+			
+			String[] sourcePathEntries = {"C:\\Users\\shayn\\eclipse-workspace\\SENG300GROUP1\\src\\parser"};
+			String abs = file.getAbsolutePath();
+			System.out.println(abs);
+			parser.setEnvironment(classPathEntries, null, null, false);
+			parser.setSource(fileData.toCharArray());
 			
 			CompilationUnit cu = (CompilationUnit) parser.createAST(null);
 			
@@ -110,15 +122,18 @@ public class ASTParserAnalysis {
 			cu.accept(v);
 			
 			declCount += v.getdeclCount();
+			System.out.println(v.getdeclCount());
 			refCount += v.getrefCount();
 			
 	}
 	
+	//Getter for type
 	public static String getsearchType() {
 		return type;
 	}
 	
-	public static void printCounts(int declCount, int refCount) {
+	//Print output
+	public static void printCounts() {
 		System.out.print(type + "." + " Declarations found: " + declCount + "; ");
 		System.out.println("references found: " + refCount);
 	}
