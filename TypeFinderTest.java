@@ -41,6 +41,8 @@ import org.junit.Before;
 import org.junit.Test;
 public class TypeFinderTest {
 	private ASTParserAnalysis parser;
+	String[] input0 = {"files", "int"};
+	String[] input1 = {"", "int"};
 	
 	@Before
 	public void setup() throws IOException {
@@ -48,9 +50,13 @@ public class TypeFinderTest {
 		
 	}
 	@Test
-	public void nulldirTest() throws IOException {
-		parser.readFileToString("");
+	public void existingdirtest() throws IOException {
+		parser.main(input0);
 		
+	}
+	@Test
+	public void illegalargtest() throws IOException {
+		parser.main(input1);
 	}
 	
 
