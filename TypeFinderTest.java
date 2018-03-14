@@ -41,12 +41,15 @@ import org.junit.Before;
 import org.junit.Test;
 public class TypeFinderTest {
 	private ASTParserAnalysis parser;
+	private TypeFinderVisitor tester;
 	String[] input0 = {"files", "int"};
 	String[] input1 = {"", "int"};
+	String[] input2 = {};
 	
 	@Before
 	public void setup() throws IOException {
 		parser = new ASTParserAnalysis();
+		tester = new TypeFinderVisitor();
 		
 	}
 	@Test
@@ -57,6 +60,10 @@ public class TypeFinderTest {
 	@Test
 	public void illegalargtest() throws IOException {
 		parser.main(input1);
+	}
+	@Test
+	public void printToConsole() throws IOException {
+		parser.main(input2);
 	}
 	
 
