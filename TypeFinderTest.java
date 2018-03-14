@@ -52,19 +52,25 @@ public class TypeFinderTest {
 		tester = new TypeFinderVisitor();
 		
 	}
-	@Test
+		@SuppressWarnings("static-access")
+	@Test 
 	public void existingdirtest() throws IOException {
+		//existing directory, has 0 long declarations
 		parser.main(input0);
 		
 	}
 	@Test
 	public void illegalargtest() throws IOException {
+		//empty string as parameter for file name, 
+		//should reject string since there is no directory name
 		parser.main(input1);
 	}
 	@Test
-	public void printToConsole() throws IOException {
+	public void emptyargstest() throws IOException {
+		//Throw an error because there is no arguments in input2
 		parser.main(input2);
 	}
+
 	
 
 }
