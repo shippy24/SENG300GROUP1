@@ -48,12 +48,9 @@ public class TypeFinderTest {
 		
 	}
 	@Test
-	public void nullexceptiontest() throws IOException {
-		parser.ParseFilesInDir("files");
-	}
-		@Test
-	public void illegalargtest() throws IOException {
-		parser.ParseFilesInDir("");
+	public void nulldirTest() throws IOException {
+		parser.readFileToString("");
+		
 	}
 	
 
