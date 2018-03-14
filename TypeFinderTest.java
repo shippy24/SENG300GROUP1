@@ -51,5 +51,10 @@ public class TypeFinderTest {
 	public void nullexceptiontest() throws IOException {
 		parser.ParseFilesInDir("files");
 	}
+		@Test
+	public void illegalargtest() throws IOException {
+		parser.ParseFilesInDir("");
+	}
+	
 
 }
